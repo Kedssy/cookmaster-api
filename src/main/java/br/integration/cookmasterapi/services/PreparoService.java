@@ -1,7 +1,10 @@
 package br.integration.cookmasterapi.services;
 
+import br.integration.cookmasterapi.dto.PreparoDto;
 import br.integration.cookmasterapi.model.Preparo;
+import br.integration.cookmasterapi.model.Receita;
 import br.integration.cookmasterapi.repository.PreparoRepository;
+import br.integration.cookmasterapi.repository.ReceitaRepository;
 import br.integration.cookmasterapi.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,11 +19,9 @@ public class PreparoService {
     private PreparoRepository preparoRepository;
 
 
-    public Preparo insert(Preparo preparo) throws Exception {
+    public Preparo insert(PreparoDto dto) throws Exception {
 
-        validarInsert(preparo);
-        preparoRepository.saveAndFlush(preparo);
-        return preparo;
+        return preparoRepository.saveAndFlush(validarInsert(dto));
 
     }
 
@@ -32,6 +33,10 @@ public class PreparoService {
 
     public List<Preparo> findAll() {
         return preparoRepository.findAll();
+    }
+
+    public List<Preparo> findByReceitaId(Long idReceita) {
+        return preparoRepository.findByReceitaId(idReceita);
     }
 
     public Preparo findById(Long id) throws Exception {
@@ -46,9 +51,15 @@ public class PreparoService {
         return preparoRepository.findByDescricaoContainingAllIgnoringCase(descricao);
     }
 
-    private void validarInsert(Preparo preparo) throws Exception {
-        if (preparo.getId() != null) {
+    private Preparo validarInsert(PreparoDto dto) throws Exception {
+
+        Preparo p = new Preparo();
+        if (dto.getId() != null) {
             throw new Exception("Não deve informar o ID para inserir o preparo");
         }
+
+        p.setReceita(dto.getReceita());
+        p.setDescricao(dto.getDescricao());
+        return p;
     }
 }

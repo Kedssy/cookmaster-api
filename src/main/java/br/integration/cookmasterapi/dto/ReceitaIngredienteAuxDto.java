@@ -6,6 +6,9 @@ import br.integration.cookmasterapi.model.ReceitaIngrediente;
 import br.integration.cookmasterapi.util.Util;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,14 +17,32 @@ import java.util.zip.DataFormatException;
 
 @Data
 public class ReceitaIngredienteAuxDto {
+
     private Long idReceita;
+
+    @NotNull
     private String imgReceita;
+
+    @NotNull
     private String dsReceita;
+
+    @NotNull
     private Long idUsuario;
-    private List<Preparo> preparos = new ArrayList<>();
+
+    @NotNull
+    private Long idCategoria;
+
     private int voto;
+
+    @NotNull
+    @NotEmpty
+    private List<PreparoDto> preparos = new ArrayList<>();
+
+
+    @NotNull
+    @NotEmpty
     private List<IngredienteCompostoDto> ingredientes = new ArrayList<>();
-    private ReceitaIngrediente receitaIngrediente;
+
 
     public ReceitaIngredienteAuxDto getInstance(ReceitaIngrediente entity) throws IOException, DataFormatException {
         if (entity != null) {

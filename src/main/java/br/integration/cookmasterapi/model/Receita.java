@@ -10,6 +10,9 @@ import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import org.hibernate.annotations.Type;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @Entity
 @Table(name = "receita")
